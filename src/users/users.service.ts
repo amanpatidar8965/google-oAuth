@@ -27,16 +27,30 @@ export class UsersService {
   async saveUser(
     id: string,
     displayName: string,
-    email:string,
+    email: string,
     accessToken: string,
-    refreshToken:string,
+    refreshToken: string,
   ): Promise<User> {
     // Save the user to the database
-    const user = await this.userRepository.create({
-      userName: displayName,
-      googleId: id,
-      email:email,
-    });
-    return this.userRepository.save(user);
+    let user = await this.userRepository.findOne({ where: { googleId: id } });
+
+    if (user) {
+      user.googleId = id;
+      user.email = email;
+      user.accessToken= accessToken;
+      user.refreshToken = refreshToken;
+      await this.userRepository.save(user);
+    } else {
+      user = await this.userRepository.create({
+        userName: displayName,
+        googleId: id,
+        email: email,
+        accessToken: accessToken,
+        refreshToken: refreshToken,
+      });
+      await this.userRepository.save(user);
+    }
+
+    return user;
   }
 }

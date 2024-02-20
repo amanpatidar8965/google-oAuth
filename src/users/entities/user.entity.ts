@@ -22,10 +22,16 @@ export class User {
   @DeleteDateColumn({ type: 'timestamp' })
   deletedAt: Date;
 
+  @Column({ nullable: true })
+  accessToken: string;
+
+  @Column({ nullable: true })
+  refreshToken: string;
+
   @Column()
   userName: string;
 
-  @Column({ nullable:true})
+  @Column({ nullable: true })
   @IsOptional()
   email: string;
 
