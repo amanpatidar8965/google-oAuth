@@ -5,6 +5,7 @@ import { GoogleStrategy } from 'src/google-strategy/google.strategy';
 import { PassportModule } from '@nestjs/passport';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
+import { JwtService } from '@nestjs/jwt';
 
 @Module({
   imports: [
@@ -12,7 +13,7 @@ import { User } from './entities/user.entity';
     TypeOrmModule.forFeature([User]),
   ],
   controllers: [UsersController],
-  providers: [UsersService, GoogleStrategy],
+  providers: [UsersService, GoogleStrategy , JwtService],
   exports: [UsersModule],
 })
 export class UsersModule {}

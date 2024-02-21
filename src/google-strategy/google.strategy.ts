@@ -1,3 +1,4 @@
+import { JwtService } from '@nestjs/jwt';
 import { UsersService } from './../users/users.service';
 import { PassportStrategy } from '@nestjs/passport';
 import { Strategy, VeriyfyCallback } from 'passport-google-oauth20';
@@ -6,7 +7,8 @@ import { Env } from 'src/env';
 
 @Injectable()
 export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
-  constructor(private readonly usersService: UsersService) {
+  constructor(private readonly usersService: UsersService,
+    private jwtService: JwtService) {
     super({
       clientID: Env.GOOGLE_CLIENT_ID,
       clientSecret: Env.GOOGLE_CLIENT_SECRET,
@@ -38,7 +40,11 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
     //   accessToken,
     //   refreshToken,
     // };
-    done(null, user);
+
+     // Generate JWT token
+     const jwtPayload = { userId: user.id }; // Customize as needed
+     const token = this.jwtService.sign(jwtPayload);
+    done(null, token);
     console.log(profile);
   }
 }
