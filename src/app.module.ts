@@ -5,6 +5,13 @@ import { UsersModule } from './users/users.module';
 import { Env } from './env';
 import { User } from './users/entities/user.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { LoginModule } from './login/login.module';
+import { TestModule } from './test/test.module';
+import { Authmodule } from './auth/auth.module';
+import { LoginController } from './login/login.controller';
+import { TestController } from './test/test.controller';
+import { LoginService } from './login/login.service';
+import { TestService } from './test/test.service';
 
 @Module({
   imports: [
@@ -21,8 +28,11 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       entities: [User],
     }),
     UsersModule,
+    LoginModule,
+    TestModule,
+    Authmodule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [AppController , LoginController , TestController],
+  providers: [AppService , LoginService , TestService],
 })
 export class AppModule {}
